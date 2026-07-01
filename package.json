@@ -1,0 +1,21 @@
+{
+  "name": "trade-fair-scraper",
+  "version": "1.0.0",
+  "description": "Advanced trade fair & exhibition web scraper with structured table export",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:visible": "set HEADLESS=false&& node server.js",
+    "dev": "node --watch server.js",
+    "postinstall": "npx playwright install chromium"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Trade Fair Scraper — Exhibition Data Extractor</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div>
+          <h1>Trade Fair Scraper</h1>
+          <p class="subtitle">
+            Paste a trade fair or exhibition listing URL — get structured data in a table.
+            Export to CSV for Excel or Google Sheets.
+          </p>
+        </div>
+      </header>
+
+      <section class="card form-card">
+        <form id="scrapeForm">
+          <div class="field field-wide">
+            <label for="url">Trade fair / exhibition page URL</label>
+            <input
+              id="url"
+              name="url"
+              type="url"
+              required
+              placeholder="https://example.com/trade-fairs-2026"
+              autocomplete="url"
+            />
+          </div>
+          <div class="field">
+            <label for="maxEvents">Max events</label>
+            <input id="maxEvents" name="maxEvents" type="number" min="1" max="200" value="30" />
+          </div>
+          <div class="field">
+            <label for="maxPages">Max listing pages</label>
+            <input id="maxPages" name="maxPages" type="number" min="1" max="20" value="3" />
+          </div>
+          <div class="field field-check">
+            <label class="checkbox-label">
+              <input id="scrapeAllPages" name="scrapeAllPages" type="checkbox" />
+              Scrape all listing pages until empty (ignores max limits; up to 500 pages / 10,000 events)
+            </label>
+          </div>
+          <div class="field field-check">
+            <label class="checkbox-label">
+              <input id="followDetails" name="followDetails" type="checkbox" checked />
+              Visit event detail pages (recommended for Clocate — past editions &amp; frequency)
+            </label>
+          </div>
+          <div class="field field-check">
+            <label class="checkbox-label">
+              <input id="useBrowser" name="useBrowser" type="checkbox" />
+              Force browser mode (required for 10times.com — Cloudflare protected)
+            </label>
+          </div>
+          <div class="field field-btn">
+            <button type="submit" id="submitBtn">Start scraping</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="statusSection" class="card status-card hidden">
+        <div class="status-header">
+          <span id="statusBadge" class="badge badge-running">Running</span>
+          <span id="statusText">Initializing…</span>
+        </div>
+        <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+        <ul id="logList" class="log-list"></ul>
+      </section>
+
+      <section id="resultsSection" class="hidden">
+        <div class="results-toolbar">
+          <div>
+            <h2>Extracted events</h2>
+            <p id="resultsMeta" class="subtitle"></p>
+          </div>
+          <div class="toolbar-actions">
+            <button type="button" id="exportCsvBtn" class="btn-secondary">Export CSV</button>
+            <button type="button" id="copyTableBtn" class="btn-secondary">Copy table</button>
+          </div>
+        </div>
+
+        <div class="card table-wrap">
+          <table id="resultsTable">
+            <thead>
+              <tr>
+                <th>Country</th>
+                <th>Event name</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Venue / location</th>
+                <th>Category</th>
+                <th>Previous edition dates</th>
+                <th>Previous venues</th>
+                <th>Frequency</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card info-card">
+        <h3>How it works</h3>
+        <ul>
+          <li>Optimized adapters for <strong>clocate.com</strong> and <strong>10times.com</strong>.</li>
+          <li>Clocate: parses listing cards, JSON-LD, past editions, venue, category, frequency.</li>
+          <li>10times: uses a real browser (Playwright) to bypass Cloudflare — enable <em>Force browser mode</em>.</li>
+          <li>If 10times shows a verification page, restart with <code>HEADLESS=false npm start</code> and complete it once.</li>
+        </ul>
+        <p class="note">
+          Example URLs: <code>https://www.clocate.com/conferences-in+germany/Y28tZGU=/</code> or
+          <code>https://10times.com/events</code>
+        </p>
+      </section>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
